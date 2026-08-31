@@ -1,0 +1,23 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      WORKSPACE_ROOT: /app/workspaces
+      SKILL_ROOT: /app/DAskill/data-analysis
+    ports: ["8000:8000"]
+    volumes:
+      - ./workspaces:/app/workspaces
+      - ./data:/app/data
+      - ./DAskill:/app/DAskill:ro
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: http://localhost:8000/api
+    ports: ["3000:3000"]
+    depends_on: [backend]
