@@ -1,0 +1,33 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "frontend": {
+      "root": "frontend/",
+      "framework": "nextjs"
+    },
+    "backend": {
+      "root": ".",
+      "entrypoint": "Dockerfile.vercel"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "backend"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "frontend"
+      }
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "DATABASE_URL": "sqlite:////tmp/ai-data-analysis/app.db",
+    "WORKSPACE_ROOT": "/tmp/ai-data-analysis/workspaces",
+    "NEXT_PUBLIC_API_BASE_URL": "/api"
+  }
+}
