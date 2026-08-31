@@ -30,4 +30,10 @@ describe("apiBaseUrl", () => {
       "http://localhost:8000/api",
     );
   });
+
+  it("uses the same origin API route outside local development", () => {
+    expect(apiBaseUrl({ protocol: "https:", hostname: "example.vercel.app" })).toBe(
+      "https://example.vercel.app/api",
+    );
+  });
 });

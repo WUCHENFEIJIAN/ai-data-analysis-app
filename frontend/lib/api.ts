@@ -4,7 +4,9 @@ export function apiBaseUrl(location?: Pick<Location, "protocol" | "hostname">): 
   const configured = process.env.NEXT_PUBLIC_API_BASE_URL;
   if (configured) return configured.replace(/\/$/, "");
   const current = location ?? (typeof window === "undefined" ? undefined : window.location);
-  return current ? `${current.protocol}//${current.hostname}:8000/api` : "http://localhost:8000/api";
+  if (!current) return "http://localhost:8000/api";
+  const isLocal = ["localhost", "127.0.0.1", "0.0.0.0"].includes(current.hostname);
+  return `${current.protocol}//${current.hostname}${isLocal ? ":8000" : ""}/api`;
 }
 
 export class ApiError extends Error {
